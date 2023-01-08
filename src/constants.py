@@ -1,0 +1,2 @@
+FPS = 50
+size = WIDTH, HEIGHT = 500, 500

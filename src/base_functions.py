@@ -3,9 +3,11 @@ import sys
 
 import pygame
 
+from constants import *
+
 
 def load_image(name, colorkey=None):
-    fullname = os.path.join('data', name)
+    fullname = os.path.join('../data', name)
     # если файл не существует, то выходим
     if not os.path.isfile(fullname):
         print(f"Файл с изображением '{fullname}' не найден")
@@ -25,7 +27,7 @@ def terminate():
     sys.exit()
 
 def load_level(filename):
-    filename = "data/maps/" + filename
+    filename = "../data/maps/" + filename
     # читаем уровень, убирая символы перевода строки
     with open(filename, 'r') as mapFile:
         level_map = [line.strip() for line in mapFile]
@@ -35,3 +37,13 @@ def load_level(filename):
 
     # дополняем каждую строку пустыми клетками ('.')
     return list(map(lambda x: x.ljust(max_width, '.'), level_map))
+
+def get_tile_pos(pos, shift_x, shift_y):
+    x, y = pos[0], pos[1]
+    grid_x, grid_y = (x - shift_x) // TILE_WIDTH, (y - shift_y) // TILE_HEIGHT
+    return grid_x, grid_y
+
+def get_pos_from_tile(pos, shift_x, shift_y):
+    x, y = pos[0], pos[1]
+    grid_x, grid_y = x * TILE_WIDTH + shift_x + TILE_WIDTH // 2, y * TILE_HEIGHT + shift_y + TILE_HEIGHT // 2
+    return grid_x, grid_y

@@ -50,3 +50,6 @@ def get_central_pos_from_tile(pos, shift_x, shift_y):
 
 def distance_between_points(point1, point2):
     return ((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2) ** 0.5
+
+def mapping(a, b):
+    return (a // TILE) * TILE, (b // TILE) * TILE

@@ -4,7 +4,7 @@ import pygame
 FPS = 50
 SIZE = WIDTH, HEIGHT = 352, 352
 # tiles
-TILE_WIDTH = TILE_HEIGHT = 32
+TILE = TILE_WIDTH = TILE_HEIGHT = 32
 
 # sprites' groups
 all_sprites = pygame.sprite.Group()

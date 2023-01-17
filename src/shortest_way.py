@@ -5,7 +5,7 @@ import sys
 # import time
 
 from constants import *
-from base_functions import get_central_pos_from_tile, get_tile_pos, distance_between_points
+from base_functions import *
 
 
 def shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, level_y):
@@ -57,6 +57,33 @@ def bfs(start, goal, graph):
 # end = time.time() - start
 # print(end)
 
+# def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift_y):
+#     shortest_way = [start_pos]
+#     start_cell_pos = get_tile_pos(start_pos, shift_x, shift_y)
+#     end_cell_pos = get_tile_pos(end_pos, shift_x, shift_y)
+#     cords_cells = shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, level_y)
+#     norm_cords = list(map(lambda x: get_central_pos_from_tile(x, shift_x, shift_y), cords_cells[:-1]))
+#     norm_cords = norm_cords[::-1]
+#     past_point = start_pos
+#     norm_cords.append(end_pos)
+#     new_point = [0, 0]
+#     for point in norm_cords:
+#         distance = distance_between_points(past_point, point)
+#         koef = distance / TILE_WIDTH * 20
+#         increase_x = (point[0] - past_point[0]) / koef
+#         increase_y = (point[1] - past_point[1]) / koef
+#         for i in range(int(koef)):
+#             new_point[0] = past_point[0] + increase_x * i
+#             new_point[1] = past_point[1] + increase_y * i
+#             pos_cell = get_tile_pos(new_point, shift_x, shift_y)
+#             if level[pos_cell[1]][pos_cell[0]] == 1:
+#                 shortest_way.append(past_point)
+#                 past_point = point
+#                 break
+#     shortest_way.append(end_pos)
+#     print(shortest_way)
+#     return shortest_way
+
 def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift_y):
     shortest_way = [start_pos]
     start_cell_pos = get_tile_pos(start_pos, shift_x, shift_y)
@@ -65,21 +92,46 @@ def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift
     norm_cords = list(map(lambda x: get_central_pos_from_tile(x, shift_x, shift_y), cords_cells[:-1]))
     norm_cords = norm_cords[::-1]
     past_point = start_pos
+    point_before_point = start_pos
     norm_cords.append(end_pos)
-    new_point = [0, 0]
     for point in norm_cords:
+        ox, oy = point_before_point
+        xm, ym = mapping(ox, oy)
         distance = distance_between_points(past_point, point)
-        koef = distance / TILE_WIDTH * 20
-        increase_x = (point[0] - past_point[0]) / koef
-        increase_y = (point[1] - past_point[1]) / koef
-        for i in range(int(koef)):
-            new_point[0] = past_point[0] + increase_x * i
-            new_point[1] = past_point[1] + increase_y * i
-            pos_cell = get_tile_pos(new_point, shift_x, shift_y)
+        sin_a = (point[1] - past_point[1]) / distance
+        cos_a = (point[0] - past_point[0]) / distance
+        sin_a = sin_a if sin_a else 0.000001
+        cos_a = cos_a if cos_a else 0.000001
+
+        # verticals
+        x, dx = (xm + TILE, 1) if cos_a >= 0 else (xm, -1)
+        for i in range(0, int(distance), TILE):
+            depth_v = (x - ox) / cos_a
+            y = oy + depth_v * sin_a
+            # if mapping(x + dx, y) in world_map:
+            #     break
+            pos_cell = get_tile_pos((x + dx, y), shift_x, shift_y)
             if level[pos_cell[1]][pos_cell[0]] == 1:
-                shortest_way.append(past_point)
-                past_point = point
                 break
-    shortest_way.append(end_pos)
-    print(shortest_way)
-    return shortest_way
+            x += dx * TILE
+
+        # horizontals
+        y, dy = (ym + TILE, 1) if sin_a >= 0 else (ym, -1)
+        for i in range(0, int(distance), TILE):
+            depth_h = (y - oy) / sin_a
+            x = ox + depth_h * cos_a
+            # if mapping(x, y + dy) in world_map:
+            #     break
+            pos_cell = get_tile_pos((x, y + dy), shift_x, shift_y)
+            if level[pos_cell[1]][pos_cell[0]] == 1:
+                break
+            y += dy * TILE
+
+        # projection
+        depth = depth_v if depth_v < depth_h else depth_h
+
+        if depth < distance:
+            shortest_way.append(point_before_point)
+            past_point = point_before_point
+
+        point_before_point = point

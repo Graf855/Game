@@ -7,9 +7,11 @@ class Player(AnimatedSprite):
     def __init__(self, pos_x, pos_y, group):
         player_image = load_image('character/Mage-M-01.png', -1)
         super().__init__(player_image, 3, 4, group)
+        self.centering_x = (TILE_WIDTH - self.image.get_width()) // 2
+        self.centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
         self.rect = self.image.get_rect().move(
-            (TILE_WIDTH * pos_x + 16) - self.image.get_width() // 2,
-            (TILE_HEIGHT * pos_y))
+            (TILE_WIDTH * pos_x) + self.centering_x,
+            (TILE_HEIGHT * pos_y) + self.centering_y)
         self.currect_location = self.rect
         self.v = 20
 

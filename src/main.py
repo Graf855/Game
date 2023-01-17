@@ -6,7 +6,7 @@ from constants import *
 from base_functions import *
 from generation_level import generate_level
 from camera import Camera
-from shortest_way import shortest_way
+from shortest_way import shortest_way_through_cells, the_shortest_way
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -35,13 +35,14 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN:
             start = get_tile_pos((player.rect.x, player.rect.y), camera.sum_dx, camera.sum_dy)
             end = get_tile_pos(event.pos, camera.sum_dx, camera.sum_dy)
-            tile_points = shortest_way(start, end, obstacle_map, level_x, level_y)
-            points = list(map(lambda x: get_pos_from_tile(x, camera.sum_dx, camera.sum_dy), tile_points))
+            tile_points = shortest_way_through_cells(start, end, obstacle_map, level_x, level_y)
+            points = list(map(lambda x: get_central_pos_from_tile(x, camera.sum_dx, camera.sum_dy), tile_points))
+            points = the_shortest_way((player.rect.x, player.rect.y), event.pos, obstacle_map, level_x, level_y, camera.sum_dx, camera.sum_dy)
     # изменяем ракурс камерв
-    # camera.update(player)
-    # # обновляем положение всех спрайтов
-    # for sprite in all_sprites:
-    #     camera.apply(sprite)
+    camera.update(player)
+    # обновляем положение всех спрайтов
+    for sprite in all_sprites:
+        camera.apply(sprite)
     amount_loops += 1
     screen.fill((0, 0, 0))
     if amount_loops == 10:

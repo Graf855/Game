@@ -41,9 +41,12 @@ def load_level(filename):
 def get_tile_pos(pos, shift_x, shift_y):
     x, y = pos[0], pos[1]
     grid_x, grid_y = (x - shift_x) // TILE_WIDTH, (y - shift_y) // TILE_HEIGHT
-    return grid_x, grid_y
+    return int(grid_x), int(grid_y)
 
-def get_pos_from_tile(pos, shift_x, shift_y):
+def get_central_pos_from_tile(pos, shift_x, shift_y):
     x, y = pos[0], pos[1]
     grid_x, grid_y = x * TILE_WIDTH + shift_x + TILE_WIDTH // 2, y * TILE_HEIGHT + shift_y + TILE_HEIGHT // 2
     return grid_x, grid_y
+
+def distance_between_points(point1, point2):
+    return ((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2) ** 0.5

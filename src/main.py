@@ -11,10 +11,11 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
 
-level = load_level(f'map1.txt')
+level = load_level(f'map2.txt')
 player, level_x, level_y, obstacle_map = generate_level(level)
 
 camera = Camera()
+amount_loops = 0
 
 while True:
     for event in pygame.event.get():
@@ -22,7 +23,11 @@ while True:
             terminate()
         if event.type == pygame.MOUSEBUTTONDOWN:
             player.new_duration(event.pos)
+    amount_loops += 1
     player.update_location()
+    if amount_loops >= 10:
+        amount_loops = 0
+        animated_sprites.update()
     camera.update(player)
     camera.apply_player_end_pos(player)
     for sprite in all_sprites:

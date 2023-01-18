@@ -2,7 +2,7 @@ import pygame
 
 # main
 FPS = 50
-SIZE = WIDTH, HEIGHT = 352, 352
+SIZE = WIDTH, HEIGHT = 800, 800
 # tiles
 TILE = TILE_WIDTH = TILE_HEIGHT = 32
 

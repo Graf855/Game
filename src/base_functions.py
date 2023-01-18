@@ -3,6 +3,8 @@ import sys
 
 import pygame
 
+from math import atan, degrees
+
 from constants import *
 
 
@@ -48,8 +50,8 @@ def get_central_pos_from_tile(pos, shift_x, shift_y):
     grid_x, grid_y = x * TILE_WIDTH + shift_x + TILE_WIDTH // 2, y * TILE_HEIGHT + shift_y + TILE_HEIGHT // 2
     return grid_x, grid_y
 
-def distance_between_points(point1, point2):
-    return ((point2[0] - point1[0]) ** 2 + (point2[1] - point1[1]) ** 2) ** 0.5
+def distance_between_points(p1, p2):
+    return hypot(p2[0] - p1[0], p2[1] - p1[1])
 
-def mapping(a, b):
-    return (a // TILE) * TILE, (b // TILE) * TILE
+def angle_from_tg_in_radians(tangens):
+    return atan(tangens)

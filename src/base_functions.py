@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-from math import atan, degrees
+from math import atan, hypot, degrees
 
 from constants import *
 
@@ -53,5 +53,8 @@ def get_central_pos_from_tile(pos, shift_x, shift_y):
 def distance_between_points(p1, p2):
     return hypot(p2[0] - p1[0], p2[1] - p1[1])
 
-def angle_from_tg_in_radians(tangens):
-    return atan(tangens)
+def get_angle(point1, point2):
+    try:
+        return degrees(atan((point1[1] - point2[1]) / (point1[0] - point2[0])))
+    except ZeroDivisionError:
+        return 0

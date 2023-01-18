@@ -165,8 +165,6 @@ def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift
     past_point = point_before_point = start_pos
     norm_cords[-1] = end_pos
     for point in norm_cords:
-        ans = raycast(past_point, point, level, shift_x, shift_y)
-        print(ans)
         if not raycast(past_point, point, level, shift_x, shift_y):
             shortest_way.append(point_before_point)
             past_point = point_before_point

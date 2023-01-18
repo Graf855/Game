@@ -26,8 +26,10 @@ class AnimatedSprite(pygame.sprite.Sprite):
                     frame_location, self.rect.size)))
 
     def update(self):
-        if not self.stand_or_go:
-            return
+        if self.stand_or_go:
+            self.cur_frame = (self.cur_frame + 1) % len(self.cur_frames)
+        else:
+            self.cur_frame = len(self.cur_frames) // 2
         try:
             self.cur_frame = (self.cur_frame + 1) % len(self.cur_frames)
             self.image = self.frames[self.cur_frames[self.cur_frame]]

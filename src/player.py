@@ -1,9 +1,11 @@
 import pygame
 from animations import AnimatedSprite
-from base_functions import load_image
+from base_functions import load_image, distance_between_points, get_angle
 from constants import *
 
 from math import sin, cos, radians
+from copy import deepcopy
+
 
 class Player(AnimatedSprite):
     def __init__(self, pos_x, pos_y, group):
@@ -14,58 +16,60 @@ class Player(AnimatedSprite):
         self.rect = self.image.get_rect().move(
             (TILE_WIDTH * pos_x) + self.centering_x,
             (TILE_HEIGHT * pos_y) + self.centering_y)
-        self.angle = 0
-        self.end_l_more_or_less = 0
-        self.end_location = self.rect.copy()
-        self.v = 20
+        self.end_location = [self.rect.x, self.rect.y]
+        self.v = 2
+        self.dy = 0
+        self.dx = 0
 
     def update_location(self):
-        if self.end_location.x * self.end_l_more_or_less > self.rect.x:
+        if self.rect.x == self.end_location[0] and self.rect.y == self.end_location[1]:
+            return
+        dist = distance_between_points((self.rect.x, self.rect.y), self.end_location)
+        steps = dist / self.v
+        try:
+            self.dx = (self.end_location[0] - self.rect.x) / steps
+            self.dy = (self.end_location[1] - self.rect.y) / steps
+        except ZeroDivisionError:
+            self.dx = 0
+            self.dy = 0
+        if self.dx < 0:
+            self.dx /= 2
+        if self.dy < 0:
+            self.dy /= 2
+        if self.dx > 0 and self.rect.x > self.end_location[0]:
+            self.stand_or_go = False
+            return
+        elif self.dx < 0 and self.rect.x < self.end_location[0]:
+            self.stand_or_go = False
+            return
+        if self.dy > 0 and self.rect.y > self.end_location[1]:
+            self.stand_or_go = False
+            return
+        elif self.dy < 0 and self.rect.y < self.end_location[1]:
+            self.stand_or_go = False
+            return
+        if (not self.dy > 0 and not self.dy < 0) and (not self.dx > 0 and not self.dx < 0):
             self.stand_or_go = False
             return
         self.stand_or_go = True
-        increase_x = cos(radians(self.angle)) * self.v
-        increase_y = sin(radians(self.angle)) * self.v
-        new_rect = self.rect.copy()
-        if self.end_location.x > self.rect.x:
-            self.rect.x += increase_x
-            self.rect.y += increase_y
+        angle = get_angle((self.rect.x, self.rect.y), self.end_location)
+        if -45 <= angle <= 45:
+            if self.dy < 0:
+                self.update_animathion_line(2, 4, 1, 1)
+            else:
+                self.update_animathion_line(4, 4, 1, 3)
         else:
-            self.rect.x -= increase_x
-            self.rect.y -= increase_y
-        # new_rect = self.rect.copy()
-        # if x_or_y == 0:
-        #     self.rect.x += TILE_WIDTH * shift
-        #     if shift == 1:
-        #         # вправо
-        #         self.update_animathion_line(3, 4, 1, 2)
-        #     else:
-        #         # влево
-        #         self.update_animathion_line(5, 4, 1, 4)
-        # else:
-        #     self.rect.y += TILE_HEIGHT * shift
-        #     if shift == 1:
-        #         # вниз
-        #         self.update_animathion_line(4, 4, 1, 3)
-        #     else:
-        #         # вверх
-        #         self.update_animathion_line(2, 4, 1, 1)
-        # # на случай если можно выйти за границы карты
-        # try:
-        #     if pygame.sprite.spritecollide(self, all_tiles, False)[0].type == 'wall':
-        #         self.rect = new_rect.copy()
-        #     else:
-        #         self.update()
-        # except IndexError:
-        #     self.rect = new_rect.copy()
+            # if self.dx
+            pass
+        past_pos = self.rect.copy()
+        self.rect.x += self.dx
+        self.rect.y += self.dy
 
-    def new_location(self, pos, new_angle):
-        if pos[0] > self.rect.x:
-            self.end_l_more_or_less = 1
-        elif pos[0] < self.rect.x:
-            self.end_l_more_or_less = -1
-        else:
-            self.end_l_more_or_less = 0
-        self.end_location.x = pos[0]
-        self.end_location.y = pos[1]
-        self.angle = new_angle
+        if pygame.sprite.spritecollideany(self, impassable_cells):
+            self.rect = past_pos.copy()
+            self.end_location = [self.rect.x, self.rect.y]
+
+    def new_duration(self, pos):
+        if pygame.sprite.spritecollideany(self, impassable_cells):
+            return
+        self.end_location = [pos[0], pos[1]]

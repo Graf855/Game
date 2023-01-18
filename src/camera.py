@@ -12,6 +12,10 @@ class Camera:
         obj.rect.x += self.dx
         obj.rect.y += self.dy
 
+    def apply_player_end_pos(self, obj):
+        obj.end_location[0] += self.dx
+        obj.end_location[1] += self.dy
+
     # позиционировать камеру на объекте target
     def update(self, target):
         self.dx = -(target.rect.x + 44 - WIDTH // 2)

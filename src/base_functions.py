@@ -3,7 +3,7 @@ import sys
 
 import pygame
 
-from math import atan, degrees
+from math import atan, degrees, hypot
 
 from constants import *
 

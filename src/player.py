@@ -54,7 +54,6 @@ class Player(AnimatedSprite):
             return
         self.stand_or_go = True
         angle = get_angle((self.rect.x, self.rect.y), self.end_location)
-        print(angle)
         if (45 <= angle < 90 or -90 < angle <= -45) or (angle == 0 and self.dx == 0):
             if self.dy < 0:
                 self.update_animathion_line(2, 4, 1, 1)

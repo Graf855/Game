@@ -176,10 +176,10 @@ def raycast(point1, point2, level, shift_x, shift_y):
     dist = distance_between_points(point1, point2)
     dist_x = point1[0] - point2[0]
     dist_y = point1[1] - point2[1]
-    if dist_x == 0:
-        angle = 0
-    else:
-        angle = angle_from_tg_in_radians(dist_y / dist_x)
+    # if dist_x == 0:
+    #     angle = 0
+    # else:
+    #     angle = angle_from_tg_in_radians(dist_y / dist_x)
     xo, yo = point1
     sin_a = dist_y / dist
     cos_a = dist_x / dist

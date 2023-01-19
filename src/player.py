@@ -33,10 +33,10 @@ class Player(AnimatedSprite):
         except ZeroDivisionError:
             self.dx = 0
             self.dy = 0
-        if self.dx < 0:
-            self.dx /= 2
-        if self.dy < 0:
-            self.dy /= 2
+        # if self.dx < 0:
+        #     self.dx /= 2
+        # if self.dy < 0:
+        #     self.dy /= 2
         if self.dx > 0 and self.rect.x > self.end_location[0]:
             self.stand_or_go = False
             return

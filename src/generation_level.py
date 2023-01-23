@@ -29,16 +29,16 @@ def generate_level(name):
     for i, layer in enumerate(level.visible_layers):
         for x, y, image in layer.tiles():
             if i == 0:
-                if (ans := level.get_tile_gid(x, y, i)) in (1, 5, 3, 10, 11, 12, 7, 4, 2):
+                if level.get_tile_gid(x, y, i) in (1, 5, 3, 10, 11, 12, 7, 4, 2):
                     Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles, impassable_cells)
                     obstacle_map.append(1)
                 else:
                     Tile(image, 0, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
                     obstacle_map.append(0)
             else:
-                if (ans := level.get_tile_gid(x, y, i)) in (13, 14, 15, 16, 17, 18, 19, 20, 21):
+                if level.get_tile_gid(x, y, i) in (13, 14, 15, 16, 17, 18, 19, 20, 21):
                     Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles, impassable_cells)
-                    obstacle_map[x * y] = ans
+                    obstacle_map[x * y] = 1
                 else:
                     Tile(image, 0, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
     return x, y, obstacle_map

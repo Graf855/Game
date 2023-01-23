@@ -11,7 +11,8 @@ from camera import Camera
 
 pygame.init()
 clock = pygame.time.Clock()
-screen = pygame.display.set_mode(SIZE)
+screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+is_fullscreen = False
 
 level_x, level_y, obstacle_map = generate_level('basik.tmx')
 player = Player(3, 18, player_group)
@@ -25,12 +26,21 @@ while True:
             terminate()
         if event.type == pygame.MOUSEBUTTONDOWN:
             player.new_duration(event.pos)
+        elif event.type == pygame.VIDEORESIZE:
+            current_size = event.size
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
+            is_fullscreen = not is_fullscreen
+            if is_fullscreen:
+                screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
+            else:
+                screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+                screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
     amount_loops += 1
     player.update_location()
-    if amount_loops >= 10:
+    if amount_loops >= 6:
         amount_loops = 0
         animated_sprites.update()
-    camera.update(player)
+    camera.update(player, screen.get_size())
     camera.apply_player_end_pos(player)
     for sprite in all_sprites:
         camera.apply(sprite)

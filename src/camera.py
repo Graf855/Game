@@ -17,8 +17,8 @@ class Camera:
         obj.end_location[1] += self.dy
 
     # позиционировать камеру на объекте target
-    def update(self, target):
-        self.dx = -(target.rect.x + 44 - WIDTH // 2)
-        self.dy = -(target.rect.y + 48 - HEIGHT // 2)
+    def update(self, target, current_size):
+        self.dx = -(target.rect.x + 44 - current_size[0] // 2)
+        self.dy = -(target.rect.y + 48 - current_size[1] // 2)
         self.sum_dx += self.dx
         self.sum_dy += self.dy

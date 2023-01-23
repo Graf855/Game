@@ -1,6 +1,6 @@
 import pygame
 from animations import AnimatedSprite
-from base_functions import load_image, distance_between_points, get_angle
+from base_functions import load_image, distance_between_points, get_game_angle
 from constants import *
 
 from math import sin, cos, radians
@@ -33,10 +33,6 @@ class Player(AnimatedSprite):
         except ZeroDivisionError:
             self.dx = 0
             self.dy = 0
-        # if self.dx < 0:
-        #     self.dx /= 2
-        # if self.dy < 0:
-        #     self.dy /= 2
         if self.dx > 0 and self.rect.x > self.end_location[0]:
             self.stand_or_go = False
             return
@@ -53,17 +49,15 @@ class Player(AnimatedSprite):
             self.stand_or_go = False
             return
         self.stand_or_go = True
-        angle = get_angle((self.rect.x, self.rect.y), self.end_location)
-        if (45 <= angle < 90 or -90 < angle <= -45) or (angle == 0 and self.dx == 0):
-            if self.dy < 0:
-                self.update_animathion_line(2, 4, 1, 1)
-            else:
-                self.update_animathion_line(4, 4, 1, 3)
+        game_angle = get_game_angle((self.rect.x, self.rect.y), self.end_location)
+        if 135 >= game_angle >= 45:
+            self.update_animathion_line(2, 4, 1, 1)
+        elif 225 <= game_angle <= 315:
+            self.update_animathion_line(4, 4, 1, 3)
+        elif 135 < game_angle < 225:
+            self.update_animathion_line(5, 4, 1, 4)
         else:
-            if self.dx < 0:
-                self.update_animathion_line(5, 4, 1, 4)
-            else:
-                self.update_animathion_line(3, 4, 1, 2)
+            self.update_animathion_line(3, 4, 1, 2)
         past_pos = self.rect.copy()
         self.rect.x += self.dx
         self.rect.y += self.dy

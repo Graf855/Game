@@ -58,3 +58,16 @@ def get_angle(point1, point2):
         return degrees(atan((point1[1] - point2[1]) / (point1[0] - point2[0])))
     except ZeroDivisionError:
         return 0
+
+def get_game_angle(point1, point2):
+    angle = get_angle(point1, point2)
+    game_angle = abs(angle)
+    if (0 < angle <= 90 and point2[0] < point1[0]) or (angle == 0 and point2[1] < point1[1]):
+        game_angle = 90 - game_angle
+        game_angle += 90
+    elif -90 < angle <= 0 and point2[0] < point1[0]:
+        game_angle += 180
+    elif (0 < angle <= 90 and point2[0] > point1[0]) or (angle == 0 and point2[1] > point1[1]):
+        game_angle = 90 - game_angle
+        game_angle += 270
+    return game_angle

@@ -8,6 +8,10 @@ from base_functions import *
 from player import Player
 from generation_level import generate_level
 from camera import Camera
+from main_menu import menu_main
+
+
+menu_main()
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -26,8 +30,6 @@ while True:
             terminate()
         if event.type == pygame.MOUSEBUTTONDOWN:
             player.new_duration(event.pos)
-        elif event.type == pygame.VIDEORESIZE:
-            current_size = event.size
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
             is_fullscreen = not is_fullscreen
             if is_fullscreen:

@@ -4,6 +4,9 @@ import pygame
 FPS = 30
 SIZE = WIDTH, HEIGHT = 640, 640
 
+# menu
+
+
 # tiles
 TILE = TILE_WIDTH = TILE_HEIGHT = 32
 

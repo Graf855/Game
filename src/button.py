@@ -56,6 +56,17 @@ class Button:
     def drawing(self, screen):
         screen.blit(self.buttonSurface, self.buttonRect)
 
+    def change_buttonRect(self, scale_x, scale_y):
+        self.buttonRect.x *= scale_x
+        self.x *= scale_x
+        self.y *= scale_y
+        self.width *= scale_x
+        self.height *= scale_y
+        self.buttonRect.y *= scale_y
+        self.buttonRect.width *= scale_x
+        self.buttonRect.height *= scale_y
+        self.buttonSurface = pygame.transform.scale(self.buttonSurface, (self.buttonRect.width, self.buttonRect.height))
+
     def function_call(self, fuction):
         try:
             return fuction()

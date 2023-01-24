@@ -17,6 +17,7 @@ pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
 is_fullscreen = False
+last_size = screen.get_size()
 
 level_x, level_y, obstacle_map = generate_level('basik.tmx')
 player = Player(3, 18, player_group)
@@ -33,10 +34,11 @@ while True:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
             is_fullscreen = not is_fullscreen
             if is_fullscreen:
+                last_size = screen.get_size()
                 screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
             else:
-                screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
-                screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
+                screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
+                screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
     amount_loops += 1
     player.update_location()
     if amount_loops >= 6:

@@ -26,7 +26,9 @@ class Skeleton(AnimatedSprite):
         end_tile_pos = get_tile_pos((aim.rect.x + aim.rect.width // 2, aim.rect.y + aim.rect.height // 2),
                                     shift_x, shift_y)
 
-        tile_point = shortest_way_through_cells(start_tile_pos, end_tile_pos, level, level_x, level_y)
+        tile_points = shortest_way_through_cells(start_tile_pos, end_tile_pos, level, level_x, level_y)
+        points = list(map(lambda x: get_central_pos_from_tile(x, shift_x, shift_y), tile_points))
+        return points
         #
         # print(tile_point)
         #

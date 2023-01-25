@@ -7,6 +7,8 @@ import sys
 from constants import *
 from base_functions import *
 
+from numba import njit
+
 
 def shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, level_y):
     # level[start_cell_pos[1]][start_cell_pos[0]] = 0
@@ -25,8 +27,10 @@ def shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, lev
     while path_segment in visited:
         shortest_way.append(path_segment)
         path_segment = visited[path_segment]
+    print(shortest_way)
     return shortest_way
 
+# @njit(fastmath=True, cache=True)
 def get_next_nodes(grid, x, y, level_x, level_y):
     check_next_node = lambda x1, y1: True if 0 <= x1 < level_x and 0 <= y1 < level_y and not grid[y1][x1] else False
     ways = [-1, 0], [0, -1], [1, 0], [0, 1]
@@ -57,8 +61,9 @@ def bfs(start, goal, graph):
 # end = time.time() - start
 # print(end)
 
+# @njit(fastmath=True, cache=True)
 def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift_y):
-    shortest_way = [start_pos]
+    shortest_way = list()
     start_cell_pos = get_tile_pos(start_pos, shift_x, shift_y)
     end_cell_pos = get_tile_pos(end_pos, shift_x, shift_y)
     cords_cells = shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, level_y)
@@ -74,6 +79,7 @@ def the_shortest_way(start_pos, end_pos, level, level_x, level_y, shift_x, shift
     shortest_way.append(end_pos)
     return shortest_way
 
+@njit(fastmath=True)
 def raycast(point1, point2, level, shift_x, shift_y):
     dist = distance_between_points(point1, point2)
     dist_x = point1[0] - point2[0]

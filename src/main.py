@@ -6,6 +6,7 @@ import pytmx
 from constants import *
 from base_functions import *
 from player import Player
+from enemy import Skeleton
 from generation_level import generate_level
 from camera import Camera
 from main_menu import menu_main
@@ -21,6 +22,8 @@ last_size = screen.get_size()
 
 level_x, level_y, obstacle_map = generate_level('basik.tmx')
 player = Player(3, 18, player_group)
+enemies = list()
+enemies.append(Skeleton(20, 5, enemies_group))
 
 camera = Camera()
 amount_loops = 0
@@ -41,6 +44,8 @@ while True:
                 screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
     amount_loops += 1
     player.update_location()
+    for enemy in enemies:
+        enemy.update_location(player, obstacle_map, level_x, level_y, camera.sum_dx, camera.sum_dy)
     if amount_loops >= 6:
         amount_loops = 0
         animated_sprites.update()
@@ -51,5 +56,6 @@ while True:
     screen.fill((0, 0, 0))
     all_tiles.draw(screen)
     player_group.draw(screen)
+    enemies_group.draw(screen)
     pygame.display.flip()
     clock.tick(FPS)

@@ -4,18 +4,17 @@ from base_functions import load_image, distance_between_points, get_game_angle
 from constants import *
 
 from math import sin, cos, radians
-from copy import deepcopy
 
 
 class Player(AnimatedSprite):
     def __init__(self, pos_x, pos_y, group):
         player_image = load_image('character/Mage-M-01.png', -1)
         super().__init__(player_image, 3, 4, group)
-        self.centering_x = (TILE_WIDTH - self.image.get_width()) // 2
-        self.centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
+        centering_x = (TILE_WIDTH - self.image.get_width()) // 2
+        centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
         self.rect = self.image.get_rect().move(
-            (TILE_WIDTH * pos_x) + self.centering_x,
-            (TILE_HEIGHT * pos_y) + self.centering_y)
+            (TILE_WIDTH * pos_x) + centering_x,
+            (TILE_HEIGHT * pos_y) + centering_y)
         self.end_location = [self.rect.x, self.rect.y]
         self.v = 5
         self.dy = 0
@@ -62,11 +61,12 @@ class Player(AnimatedSprite):
         self.rect.x += self.dx
         self.rect.y += self.dy
 
-        if pygame.sprite.spritecollideany(self, impassable_cells):
+        if pygame.sprite.spritecollideany(self, impassable_cells) or\
+            pygame.sprite.spritecollideany(self, enemies_group):
             self.rect = past_pos.copy()
             self.end_location = [self.rect.x, self.rect.y]
 
     def new_duration(self, pos):
         if pygame.sprite.spritecollideany(self, impassable_cells):
             return
-        self.end_location = [pos[0], pos[1]]
+        self.end_location = [pos[0] - self.rect.width // 2, pos[1] - self.rect.height // 2]

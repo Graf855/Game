@@ -31,7 +31,6 @@ class AnimatedSprite(pygame.sprite.Sprite):
         else:
             self.cur_frame = 0
         try:
-            self.cur_frame = (self.cur_frame + 1) % len(self.cur_frames)
             self.image = self.frames[self.cur_frames[self.cur_frame]]
         except ZeroDivisionError:
             print('выбран неверный диапозон значений')

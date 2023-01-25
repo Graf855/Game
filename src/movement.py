@@ -27,10 +27,8 @@ def shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, lev
     while path_segment in visited:
         shortest_way.append(path_segment)
         path_segment = visited[path_segment]
-    print(shortest_way)
     return shortest_way
 
-# @njit(fastmath=True, cache=True)
 def get_next_nodes(grid, x, y, level_x, level_y):
     check_next_node = lambda x1, y1: True if 0 <= x1 < level_x and 0 <= y1 < level_y and not grid[y1][x1] else False
     ways = [-1, 0], [0, -1], [1, 0], [0, 1]

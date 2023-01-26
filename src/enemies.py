@@ -7,9 +7,11 @@ from movement import shortest_way_through_cells
 
 
 class Skeleton(AnimatedSprite):
-    def __init__(self, pos_x, pos_y, group):
+    def __init__(self, pos, group):
         player_image = load_image('enemies/skelet.png', -1)
         super().__init__(player_image, 3, 4, group)
+        pos_x = pos[0]
+        pos_y = pos[1]
         centering_x = (TILE_WIDTH - self.image.get_width()) // 2
         centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
         self.mask = pygame.mask.from_surface(self.image)
@@ -26,7 +28,7 @@ class Skeleton(AnimatedSprite):
     def process(self, aim, level, level_x, level_y, shift_x, shift_y):
         if self.health <= 0:
             self.kill()
-            return
+            return 1
         start_tile_pos = self.self_cords(shift_x, shift_y)
         end_tile_pos = get_tile_pos((aim.rect.x + aim.rect.width // 2, aim.rect.y + aim.rect.height // 2),
                                     shift_x, shift_y)

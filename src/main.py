@@ -12,6 +12,7 @@ from camera import Camera
 from main_menu import menu_main
 from UI import ui
 from spells import Fireball
+from new_level import new_lvl
 
 menu_main()
 
@@ -21,16 +22,25 @@ screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
 is_fullscreen = False
 last_size = screen.get_size()
 
-level_x, level_y, obstacle_map = generate_level('map1.tmx')
-
-player = Player(1, 8, player_group)
+lvl_now = 2
+lvl_name_now = f'map{lvl_now}.tmx'
+level_x, level_y, obstacle_map = generate_level(lvl_name_now)
 enemies = list()
-enemies.append(Skeleton(8, 7, enemies_group))
+with open(f'../data/maps/map{lvl_now}.txt') as f:
+    player_cord = tuple(map(int, f.readline().split()))
+    for cord in f.readlines():
+        norm_cord = tuple(map(int, cord.split()))
+        enemies.append(Skeleton(norm_cord, enemies_group))
+
+player = Player(player_cord, player_group)
 
 spells = list()
 
+win_cords = list()
+
 camera = Camera()
 amount_loops = 0
+
 
 while True:
     for event in pygame.event.get():
@@ -53,7 +63,8 @@ while True:
     amount_loops += 1
     player.update_location()
     for enemy in enemies:
-        enemy.process(player, obstacle_map, level_x, level_y, camera.sum_dx, camera.sum_dy)
+        if enemy.process(player, obstacle_map, level_x, level_y, camera.sum_dx, camera.sum_dy) == 1:
+            enemies.remove(enemy)
     if amount_loops >= 6:
         amount_loops = 0
         animated_sprites.update()
@@ -61,6 +72,21 @@ while True:
         if spell.process() == 1:
             spells.remove(spell)
     player.characteristics()
+    if not enemies:
+        if cords := new_lvl(lvl_name_now, lvl_now, camera.sum_dx, camera.sum_dy):
+            win_cords = cords
+    if win_cords and get_tile_pos((player.rect.x, player.rect.y), camera.sum_dx, camera.sum_dy) in win_cords:
+        for tile in all_tiles:
+            tile.kill()
+        for player in player_group:
+            player.kill()
+        camera = Camera()
+        info = new_lvl(lvl_name_now, lvl_now,  camera.sum_dx, camera.sum_dy, True)
+        level_x, level_y, obstacle_map = info[:3]
+        player = Player(info[3], player_group)
+        lvl_now += 1
+        for enemy_cord in info[4]:
+            enemies.append(Skeleton(enemy_cord, enemies_group))
     camera.update(player, screen.get_size())
     camera.apply_player_end_pos(player)
     for sprite in all_sprites:

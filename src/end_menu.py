@@ -1,16 +1,17 @@
 # Imports
 import sys
 import pygame
+
 from constants import *
 from base_functions import *
 from button import Button
+from show_text import show_text
 
-def menu_main():
+def end_menu(win):
     pygame.init()
     menu_screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
     font = pygame.font.Font('../data/fonts/123.ttf', 40)
     objects = list()
-    objects.append(Button(font, 220, 100, 200, 50, 'Start', lambda: 1))
     objects.append(Button(font, 220, 200, 200, 50, 'QUIT', terminate))
     is_fullscreen = False
     virtual_screen = pygame.Surface(SIZE)
@@ -19,6 +20,12 @@ def menu_main():
     background = load_image('background/default_picture_for_backgroung.jpg')
     background = pygame.transform.scale(background, SIZE)
 
+    if win:
+        text = ['ПОЗДРАВЛЯЕМ!', "Вы победили"]
+        color = (255, 0, 0)
+    else:
+        text = ['К сожелению', "Вы проиграли"]
+        color = (255, 0, 0)
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -38,11 +45,8 @@ def menu_main():
         for object in objects:
             object.change_buttonRect(new_size[0] / past_size[0], new_size[1] / past_size[1])
             object.drawing(scaled_screen)
-            ans = object.process()
-            if ans == 1:
-                pygame.quit()
-                return
-
+            object.process()
+        show_text(scaled_screen, font, text, (150, 10), new_size[0] / past_size[0], new_size[1] / past_size[1], color)
         menu_screen.blit(scaled_screen, (0, 0))
         pygame.display.flip()
 

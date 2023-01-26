@@ -2,14 +2,17 @@ import pygame
 from animations import AnimatedSprite
 from base_functions import *
 from constants import *
+from end_menu import end_menu
 
 from math import sin, cos, radians
 
 
 class Player(AnimatedSprite):
-    def __init__(self, pos_x, pos_y, group):
+    def __init__(self, pos, group):
         player_image = load_image('character/Mage-M-01.png', -1)
         super().__init__(player_image, 3, 4, group)
+        pos_x = pos[0]
+        pos_y = pos[1]
         centering_x = (TILE_WIDTH - self.image.get_width()) // 2
         centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
         self.rect = self.image.get_rect().move(
@@ -72,7 +75,7 @@ class Player(AnimatedSprite):
 
     def characteristics(self):
         if self.health <= 0:
-            terminate()
+            end_menu(False)
         self.health += self.repair_hp if self.health < self.max_health else 0
         self.energy += self.repair_en if self.energy < self.max_energy else 0
         if self.health > self.max_health:

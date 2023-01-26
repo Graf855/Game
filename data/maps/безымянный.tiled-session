@@ -39,6 +39,22 @@
                 "y": 350
             }
         },
+        "map1.tmx": {
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 134.5,
+                "y": 131
+            }
+        },
+        "map2.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 224.5,
+                "y": 531
+            }
+        },
         "underworld_load-atlas-32x32.tsx": {
             "scaleInDock": 1
         },
@@ -50,10 +66,10 @@
         }
     },
     "last.imagePath": "C:/Users/mgol2/Downloads/underworld_load/underworld_load",
-    "map.height": 10,
+    "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": null,
-    "map.width": 10,
+    "map.width": 15,
     "openFiles": [
         "basik.tmx"
     ],

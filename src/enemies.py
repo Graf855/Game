@@ -12,15 +12,16 @@ class Skeleton(AnimatedSprite):
         super().__init__(player_image, 3, 4, group)
         centering_x = (TILE_WIDTH - self.image.get_width()) // 2
         centering_y = (TILE_HEIGHT - self.image.get_height()) // 2
+        self.mask = pygame.mask.from_surface(self.image)
         self.rect = self.image.get_rect().move(
             (TILE_WIDTH * pos_x) + centering_x,
             (TILE_HEIGHT * pos_y) + centering_y)
         self.stand_or_go = False
-        self.v = 5
+        self.v = 4
         self.dy = 0
         self.dx = 0
         self.damage = 2
-        self.health = 50
+        self.health = 30
 
     def process(self, aim, level, level_x, level_y, shift_x, shift_y):
         if self.health <= 0:

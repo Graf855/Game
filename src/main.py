@@ -13,7 +13,6 @@ from main_menu import menu_main
 from UI import ui
 from spells import Fireball
 
-
 menu_main()
 
 pygame.init()
@@ -22,16 +21,13 @@ screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
 is_fullscreen = False
 last_size = screen.get_size()
 
-level_x, level_y, obstacle_map = generate_level('basik.tmx')
-player = Player(3, 2, player_group)
+level_x, level_y, obstacle_map = generate_level('map1.tmx')
+
+player = Player(1, 8, player_group)
 enemies = list()
-enemies.append(Skeleton(20, 5, enemies_group))
-enemies.append(Skeleton(25, 5, enemies_group))
-enemies.append(Skeleton(18, 10, enemies_group))
+enemies.append(Skeleton(8, 7, enemies_group))
 
 spells = list()
-indexes_spells_to_delete = list()
-
 
 camera = Camera()
 amount_loops = 0

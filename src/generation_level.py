@@ -13,18 +13,11 @@ def generate_level(name):
             if y != len(obstacle_map) - 1:
                 obstacle_map.append(list())
             if i == 0:
-                if level.get_tile_gid(x, y, i) in (1, 5, 3, 10, 11, 12, 7, 4, 2):
-                    Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles, impassable_cells)
-                    obstacle_map[y].append(1)
-                else:
-                    Tile(image, 0, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
-                    obstacle_map[y].append(0)
-            else:
-                if level.get_tile_gid(x, y, i) in (13, 14, 15, 16, 17, 18, 19, 20, 21):
-                    Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles, impassable_cells)
-                    obstacle_map[y][x] = 1
-                else:
-                    Tile(image, 0, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
+                Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
+                obstacle_map[y].append(0)
+            elif i == 2 or i == 1:
+                Tile(image, 1, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles, impassable_cells)
+                obstacle_map[y][x] = 1
     while not obstacle_map[-1]:
         obstacle_map.pop(-1)
     return len(obstacle_map[0]) - 1, len(obstacle_map) - 1, obstacle_map

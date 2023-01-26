@@ -21,8 +21,8 @@ class Player(AnimatedSprite):
         self.dx = 0
         self.health = self.max_health = 100
         self.energy = self.max_energy = 100
-        self.repair_hp = 0.1
-        self.repair_en = 0.1
+        self.repair_hp = 100
+        self.repair_en = 100
 
     def update_location(self):
         if self.rect.x == self.end_location[0] and self.rect.y == self.end_location[1]:

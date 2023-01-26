@@ -13,3 +13,4 @@ class Tile(pygame.sprite.Sprite):
         self.type = tile_type
         self.image = image
         self.rect = self.image.get_rect().move(pos_x, pos_y)
+        self.mask = pygame.mask.from_surface(self.image)

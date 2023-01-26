@@ -19,6 +19,7 @@ class Fireball(AnimatedSprite):
         self.cost = 20
         self.calculation_d(pos, end_pos)
         player.energy -= self.cost
+        self.mask = pygame.mask.from_surface(self.image)
         if player.energy <= 0:
             player.energy = 1
 
@@ -42,6 +43,8 @@ class Fireball(AnimatedSprite):
             self.kill()
             return 1
 
-        if pygame.sprite.spritecollideany(self, impassable_cells):
-            self.kill()
-            return 1
+        if tiles := pygame.sprite.spritecollide(self, impassable_cells, False):
+            for tile in tiles:
+                if pygame.sprite.collide_mask(self, tile):
+                    self.kill()
+                    return 1

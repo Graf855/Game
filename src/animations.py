@@ -42,3 +42,8 @@ class AnimatedSprite(pygame.sprite.Sprite):
         for i in range(finish_indent_y - start_indent_y):
             for j in range(finish_indent_x - start_indent_x):
                 self.cur_frames.append(first_elem + j + i * self.columns)
+
+    def rotate(self, angle):
+        for i, frame in enumerate(self.frames):
+            self.frames[i] = pygame.transform.rotate(frame, angle)
+        self.image = self.frames[self.cur_frame]

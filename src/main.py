@@ -11,6 +11,7 @@ from generation_level import generate_level
 from camera import Camera
 from main_menu import menu_main
 from UI import ui
+from spells import Fireball
 
 
 menu_main()
@@ -28,6 +29,9 @@ enemies.append(Skeleton(20, 5, enemies_group))
 enemies.append(Skeleton(25, 5, enemies_group))
 enemies.append(Skeleton(18, 10, enemies_group))
 
+spells = list()
+indexes_spells_to_delete = list()
+
 
 camera = Camera()
 amount_loops = 0
@@ -36,7 +40,7 @@ while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             terminate()
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             player.new_duration(event.pos)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
             is_fullscreen = not is_fullscreen
@@ -46,14 +50,21 @@ while True:
             else:
                 screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
                 screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
+            if player.energy > 20:
+                spells.append(Fireball(player, player.rect.center, pygame.mouse.get_pos(), spells_group))
+
     amount_loops += 1
     player.update_location()
     for enemy in enemies:
         enemy.process(player, obstacle_map, level_x, level_y, camera.sum_dx, camera.sum_dy)
-    player.look_for_health()
     if amount_loops >= 6:
         amount_loops = 0
         animated_sprites.update()
+    for spell in spells:
+        if spell.process() == 1:
+            spells.remove(spell)
+    player.characteristics()
     camera.update(player, screen.get_size())
     camera.apply_player_end_pos(player)
     for sprite in all_sprites:
@@ -61,6 +72,7 @@ while True:
     screen.fill((0, 0, 0))
     all_tiles.draw(screen)
     player_group.draw(screen)
+    spells_group.draw(screen)
     enemies_group.draw(screen)
     ui(screen, player.health, player.energy)
     pygame.display.flip()

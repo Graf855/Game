@@ -19,8 +19,10 @@ class Player(AnimatedSprite):
         self.v = 5
         self.dy = 0
         self.dx = 0
-        self.health = 100
-        self.energy = 100
+        self.health = self.max_health = 100
+        self.energy = self.max_energy = 100
+        self.repair_hp = 0.1
+        self.repair_en = 0.1
 
     def update_location(self):
         if self.rect.x == self.end_location[0] and self.rect.y == self.end_location[1]:
@@ -68,9 +70,15 @@ class Player(AnimatedSprite):
             self.rect = past_pos.copy()
             self.end_location = [self.rect.x, self.rect.y]
 
-    def look_for_health(self):
+    def characteristics(self):
         if self.health <= 0:
             terminate()
+        self.health += self.repair_hp if self.health < self.max_health else 0
+        self.energy += self.repair_en if self.energy < self.max_energy else 0
+        if self.health > self.max_health:
+            self.health = self.max_health
+        if self.energy > self.max_energy:
+            self.energy = self.max_energy
 
     def new_duration(self, pos):
         if pygame.sprite.spritecollideany(self, impassable_cells):

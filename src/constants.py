@@ -7,9 +7,6 @@ SIZE = WIDTH, HEIGHT = 640, 640
 # tiles
 TILE = TILE_WIDTH = TILE_HEIGHT = 32
 
-# levels
-AMOUNT_LVL = 1
-
 # sprites' groups
 all_sprites = pygame.sprite.Group()
 all_tiles = pygame.sprite.Group()

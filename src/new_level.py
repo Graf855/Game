@@ -8,9 +8,10 @@ from end_menu import end_menu
 
 flag = True
 
-def new_lvl(name, index,  shift_x, shift_y, next_lvl=False):
+def new_lvl(name, index,  shift_x, shift_y, next_lvl=False, time=0):
     global flag
     if next_lvl:
+        flag_new_time = False
         index += 1
         flag = True
         try:
@@ -23,7 +24,14 @@ def new_lvl(name, index,  shift_x, shift_y, next_lvl=False):
                     enemies_cords.append(norm_cord)
             return level_x, level_y, level, player_cord, enemies_cords
         except FileNotFoundError:
-            end_menu(True)
+            with open('../data/score/score.txt', mode='r') as f:
+                past_time = float(f.readline())
+                if not past_time or past_time > time:
+                    flag_new_time = True
+            if flag_new_time:
+                with open('../data/score/score.txt', mode='w') as f:
+                    f.write(f'{time}')
+            end_menu(True, time, flag_new_time)
     if not flag:
         return
     level = pytmx.load_pygame(f'../data/maps/{name}')

@@ -28,6 +28,8 @@ def menu_main():
                 if is_fullscreen:
                     menu_screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
                 else:
+                    # Два раза написано специально, это какой-то баг pygame наверное, но если написать только один раз
+                    # то тогда после входы и выхода из полноэкранного режима пропадёт возможность менять размеры экрана
                     menu_screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
                     menu_screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
         virtual_screen.fill((0, 0, 0))

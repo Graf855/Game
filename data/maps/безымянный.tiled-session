@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "basik.tmx",
+    "activeFile": "map2.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -49,10 +49,10 @@
         },
         "map2.tmx": {
             "scale": 1,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 224.5,
-                "y": 531
+                "y": 134
             }
         },
         "underworld_load-atlas-32x32.tsx": {
@@ -71,11 +71,15 @@
     "map.layerDataFormat": null,
     "map.width": 15,
     "openFiles": [
-        "basik.tmx"
+        "basik.tmx",
+        "map1.tmx",
+        "map2.tmx"
     ],
     "project": "безымянный.tiled-project",
     "recentFiles": [
         "basik.tmx",
+        "map1.tmx",
+        "map2.tmx",
         "C:/Users/mgol2/Downloads/underworld_load/underworld_load/example-map-B1.tmx",
         "C:/Users/mgol2/Downloads/underworld_load/underworld_load/example-map-F1.tmx"
     ],

@@ -2,6 +2,7 @@ import os
 import sys
 import pygame
 import pytmx
+import time
 
 from constants import *
 from base_functions import *
@@ -22,7 +23,7 @@ screen = pygame.display.set_mode(SIZE, pygame.RESIZABLE)
 is_fullscreen = False
 last_size = screen.get_size()
 
-lvl_now = 2
+lvl_now = 1
 lvl_name_now = f'map{lvl_now}.tmx'
 level_x, level_y, obstacle_map = generate_level(lvl_name_now)
 enemies = list()
@@ -41,7 +42,7 @@ win_cords = list()
 camera = Camera()
 amount_loops = 0
 
-
+start = time.time()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -54,6 +55,8 @@ while True:
                 last_size = screen.get_size()
                 screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
             else:
+                # Два раза написано специально, это какой-то баг pygame наверное, но если написать только один раз
+                # то тогда после входы и выхода из полноэкранного режима пропадёт возможность менять размеры экрана
                 screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
                 screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
@@ -75,16 +78,18 @@ while True:
     if not enemies:
         if cords := new_lvl(lvl_name_now, lvl_now, camera.sum_dx, camera.sum_dy):
             win_cords = cords
-    if win_cords and get_tile_pos((player.rect.x, player.rect.y), camera.sum_dx, camera.sum_dy) in win_cords:
+    if win_cords and get_tile_pos(player.rect.center, camera.sum_dx, camera.sum_dy) in win_cords:
         for tile in all_tiles:
             tile.kill()
         for player in player_group:
             player.kill()
         camera = Camera()
-        info = new_lvl(lvl_name_now, lvl_now,  camera.sum_dx, camera.sum_dy, True)
+        win_cords = list()
+        info = new_lvl(lvl_name_now, lvl_now,  camera.sum_dx, camera.sum_dy, True, time.time() - start)
         level_x, level_y, obstacle_map = info[:3]
         player = Player(info[3], player_group)
         lvl_now += 1
+        lvl_name_now = f'map{lvl_now}.tmx'
         for enemy_cord in info[4]:
             enemies.append(Skeleton(enemy_cord, enemies_group))
     camera.update(player, screen.get_size())

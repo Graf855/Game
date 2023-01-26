@@ -3,7 +3,7 @@ from animations import AnimatedSprite
 from base_functions import *
 from constants import *
 
-from movement import shortest_way_through_cells
+from movement import shortest_way_through_cells, next_move
 
 
 class Skeleton(AnimatedSprite):
@@ -22,7 +22,7 @@ class Skeleton(AnimatedSprite):
         self.v = 4
         self.dy = 0
         self.dx = 0
-        self.damage = 2
+        self.damage = 5
         self.health = 30
 
     def process(self, aim, level, level_x, level_y, shift_x, shift_y):
@@ -40,14 +40,7 @@ class Skeleton(AnimatedSprite):
         except IndexError:
             return
 
-        dist = distance_between_points((self.rect.x, self.rect.y), point)
-        steps = dist // self.v
-        try:
-            self.dx = (point[0] - self.rect.x) / steps
-            self.dy = (point[1] - self.rect.y) / steps
-        except ZeroDivisionError:
-            self.dx = 0
-            self.dy = 0
+        self.dx, self.dy = next_move((self.rect.x, self.rect.y), point, self.v)
 
         self.stand_or_go = True
         game_angle = get_game_angle((self.rect.x, self.rect.y), point)

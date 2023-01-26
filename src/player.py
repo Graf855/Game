@@ -1,11 +1,10 @@
 import pygame
+
 from animations import AnimatedSprite
 from base_functions import *
 from constants import *
 from end_menu import end_menu
-
-from math import sin, cos, radians
-
+from movement import next_move
 
 class Player(AnimatedSprite):
     def __init__(self, pos, group):
@@ -24,21 +23,16 @@ class Player(AnimatedSprite):
         self.dx = 0
         self.health = self.max_health = 100
         self.energy = self.max_energy = 100
-        self.repair_hp = 100
-        self.repair_en = 100
+        self.repair_hp = 0.1
+        self.repair_en = 0.1
 
     def update_location(self):
         if self.rect.x == self.end_location[0] and self.rect.y == self.end_location[1]:
             self.stand_or_go = False
             return
-        dist = distance_between_points((self.rect.x, self.rect.y), self.end_location)
-        steps = dist // self.v
-        try:
-            self.dx = (self.end_location[0] - self.rect.x) / steps
-            self.dy = (self.end_location[1] - self.rect.y) / steps
-        except ZeroDivisionError:
-            self.dx = 0
-            self.dy = 0
+
+        self.dx, self.dy = next_move((self.rect.x, self.rect.y), self.end_location, self.v)
+
         if self.dx > 0 and self.rect.x > self.end_location[0]:
             self.stand_or_go = False
             return

@@ -49,16 +49,6 @@ while True:
             terminate()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 3:
             player.new_duration(event.pos)
-        elif event.type == pygame.KEYDOWN and event.key == pygame.K_F11:
-            is_fullscreen = not is_fullscreen
-            if is_fullscreen:
-                last_size = screen.get_size()
-                screen = pygame.display.set_mode(SIZE, pygame.FULLSCREEN)
-            else:
-                # Два раза написано специально, это какой-то баг pygame наверное, но если написать только один раз
-                # то тогда после входы и выхода из полноэкранного режима пропадёт возможность менять размеры экрана
-                screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
-                screen = pygame.display.set_mode(last_size, pygame.RESIZABLE)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_q:
             if player.energy > 20:
                 spells.append(Fireball(player, player.rect.center, pygame.mouse.get_pos(), spells_group))

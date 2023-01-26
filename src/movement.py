@@ -1,12 +1,9 @@
 import pygame as pg
-# from random import random
 from collections import deque
 import sys
-# import time
 
 from constants import *
 from base_functions import *
-
 
 def shortest_way_through_cells(start_cell_pos, end_cell_pos, level, level_x, level_y):
     # dict of adjacency lists
@@ -46,14 +43,10 @@ def bfs(start, goal, graph):
                 visited[next_node] = cur_node
     return queue, visited
 
-
-def next_move(point1, point2, v):
-    dist = distance_between_points(point1, point2)
+def next_move(point1, point2, dist, v):
     steps = dist // v
-    try:
-        dx = (point2[0] - point1[0]) / steps
-        dy = (point2[1] - point1[1]) / steps
-    except ZeroDivisionError:
-        dx = 0
-        dy = 0
+    if steps == 0:
+        return 0, 0
+    dx = (point2[0] - point1[0]) / steps
+    dy = (point2[1] - point1[1]) / steps
     return dx, dy

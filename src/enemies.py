@@ -40,7 +40,8 @@ class Skeleton(AnimatedSprite):
         except IndexError:
             return
 
-        self.dx, self.dy = next_move((self.rect.x, self.rect.y), point, self.v)
+        dist = distance_between_points((self.rect.x, self.rect.y), point)
+        self.dx, self.dy = next_move((self.rect.x, self.rect.y), point, dist, self.v)
 
         self.stand_or_go = True
         game_angle = get_game_angle((self.rect.x, self.rect.y), point)

@@ -31,7 +31,8 @@ class Player(AnimatedSprite):
             self.stand_or_go = False
             return
 
-        self.dx, self.dy = next_move((self.rect.x, self.rect.y), self.end_location, self.v)
+        dist = distance_between_points((self.rect.x, self.rect.y), self.end_location)
+        self.dx, self.dy = next_move((self.rect.x, self.rect.y), self.end_location, dist,  self.v)
 
         if self.dx > 0 and self.rect.x > self.end_location[0]:
             self.stand_or_go = False

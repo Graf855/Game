@@ -35,7 +35,10 @@ def end_menu(win, time=0, flag_new_time=False):
             time = float(f.readline())
         text = ['К сожелению', "Вы проиграли"]
         color = (0, 255, 0)
-    text_time = [f'Ваше лучшее время {time:.2f}']
+    if time >= 10000:
+        text_time = [f'Вы ещё не установили', 'своё лучшее время']
+    else:
+        text_time = [f'Ваше лучшее время {time:.2f}']
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

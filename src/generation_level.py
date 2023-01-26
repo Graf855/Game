@@ -25,10 +25,6 @@ def generate_level(name):
                     obstacle_map[y][x] = 1
                 else:
                     Tile(image, 0, TILE_WIDTH * x, TILE_HEIGHT * y, all_tiles)
-    obstacle_map.pop(-1)
-    obstacle_map.pop(-1)
-    obstacle_map.pop(-1)
-    obstacle_map.pop(-1)
-    obstacle_map.pop(-1)
-    obstacle_map.pop(-1)
+    while not obstacle_map[-1]:
+        obstacle_map.pop(-1)
     return len(obstacle_map[0]) - 1, len(obstacle_map) - 1, obstacle_map

@@ -1,6 +1,6 @@
 import pygame
 from animations import AnimatedSprite
-from base_functions import load_image, distance_between_points, get_game_angle
+from base_functions import *
 from constants import *
 
 from math import sin, cos, radians
@@ -19,6 +19,8 @@ class Player(AnimatedSprite):
         self.v = 5
         self.dy = 0
         self.dx = 0
+        self.health = 100
+        self.energy = 100
 
     def update_location(self):
         if self.rect.x == self.end_location[0] and self.rect.y == self.end_location[1]:
@@ -61,10 +63,14 @@ class Player(AnimatedSprite):
         self.rect.x += self.dx
         self.rect.y += self.dy
 
-        if pygame.sprite.spritecollideany(self, impassable_cells) or\
+        if pygame.sprite.spritecollideany(self, impassable_cells) or \
             pygame.sprite.spritecollideany(self, enemies_group):
             self.rect = past_pos.copy()
             self.end_location = [self.rect.x, self.rect.y]
+
+    def look_for_health(self):
+        if self.health <= 0:
+            terminate()
 
     def new_duration(self, pos):
         if pygame.sprite.spritecollideany(self, impassable_cells):

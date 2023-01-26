@@ -11,6 +11,7 @@ class Button:
         self.onePress = onePress
 
         self.fillColors = {
+            'no color': (1, 2, 3),
             'normal': (255, 255, 255),
             'hover': '#666666',
             'pressed': '#333333',
@@ -27,8 +28,8 @@ class Button:
         answer = None
 
         mousePos = pygame.mouse.get_pos()
-        self.buttonSurface.fill((255, 25, 255))
-        self.buttonSurface.set_colorkey((255, 25, 255))
+        self.buttonSurface.fill(self.fillColors['no color'])
+        self.buttonSurface.set_colorkey(self.fillColors['no color'])
         pygame.draw.rect(self.buttonSurface, self.fillColors['normal'], (0, 0, self.width, self.height), 0, 20)
         if self.buttonRect.collidepoint(mousePos):
             pygame.draw.rect(self.buttonSurface, self.fillColors['hover'], (0, 0, self.width, self.height), 0, 20)
